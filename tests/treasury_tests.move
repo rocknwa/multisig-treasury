@@ -1,16 +1,13 @@
 #[test_only]
 module multisig_treasury::treasury_tests {
-    use sui::test_scenario::{Self as ts, Scenario};
-    use sui::coin::{Self, Coin};
+    use sui::test_scenario::{Self as ts};
+    use sui::coin::{Self};
     use sui::sui::SUI;
     use multisig_treasury::treasury::{
         Self, 
         Treasury, 
-        TreasuryAdminCap, 
         Proposal,
         Transaction,
-        SpendingLimit,
-        AmountThreshold
     };
     use std::string::{Self, String};
 
@@ -115,7 +112,7 @@ module multisig_treasury::treasury_tests {
     }
 
     #[test]
-    #[expected_failure(abort_code = treasury::EInvalidSigners)]
+    #[expected_failure(abort_code = treasury::EInvalidThreshold)]
     fun test_create_treasury_no_signers() {
         let mut scenario = ts::begin(ADMIN);
         let signers = vector::empty<address>();
@@ -229,7 +226,7 @@ module multisig_treasury::treasury_tests {
         // Setup
         ts::next_tx(&mut scenario, ADMIN);
         {
-            let (treasury, admin_cap) = treasury::create_treasury(
+            let (mut treasury, admin_cap) = treasury::create_treasury(
                 string::utf8(b"Test Treasury"),
                 signers,
                 3,
@@ -279,7 +276,7 @@ module multisig_treasury::treasury_tests {
         // Setup
         ts::next_tx(&mut scenario, ADMIN);
         {
-            let (treasury, admin_cap) = treasury::create_treasury(
+            let (mut treasury, admin_cap) = treasury::create_treasury(
                 string::utf8(b"Test Treasury"),
                 signers,
                 3,
@@ -567,14 +564,14 @@ module multisig_treasury::treasury_tests {
 
     // =================== Helper Functions ===================
 
-    fun setup_proposal_scenario(): Scenario {
+    fun setup_proposal_scenario(): ts::Scenario {
         let mut scenario = ts::begin(ADMIN);
         let signers = create_signers();
         
         // Create treasury
         ts::next_tx(&mut scenario, ADMIN);
         {
-            let (treasury, admin_cap) = treasury::create_treasury(
+            let (mut treasury, admin_cap) = treasury::create_treasury(
                 string::utf8(b"Test Treasury"),
                 signers,
                 3,
