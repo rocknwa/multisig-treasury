@@ -358,6 +358,24 @@ module multisig_treasury::treasury {
         transfer::share_object(proposal);
     }
 
+    /// Create a simple single-transaction proposal (entry function for CLI)
+    #[allow(lint(share_owned, public_entry))]
+    public entry fun create_simple_proposal(
+        treasury: &mut Treasury,
+        recipient: address,
+        amount: u64,
+        category: String,
+        description: String,
+        ctx: &mut TxContext
+    ) {
+        let mut transactions = vector::empty();
+        let tx = new_transaction(recipient, amount, category);
+        vector::push_back(&mut transactions, tx);
+        
+        let proposal = create_proposal(treasury, transactions, category, description, ctx);
+        transfer::share_object(proposal);
+    }
+
     /// Sign a proposal
     public fun sign_proposal(
         treasury: &Treasury,
