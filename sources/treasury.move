@@ -245,6 +245,29 @@ module multisig_treasury::treasury {
         (treasury, admin_cap)
     }
 
+    /// Create and share a new treasury (convenience function for CLI)
+    #[allow(lint(public_entry))]
+    public entry fun create_and_share_treasury(
+        name: String,
+        signers: vector<address>,
+        threshold: u64,
+        time_lock_base: u64,
+        time_lock_factor: u64,
+        ctx: &mut TxContext
+    ) {
+        let (treasury, admin_cap) = create_treasury(
+            name,
+            signers,
+            threshold,
+            time_lock_base,
+            time_lock_factor,
+            ctx
+        );
+        
+        transfer::share_object(treasury);
+        transfer::transfer(admin_cap, tx_context::sender(ctx));
+    }
+
     /// Deposit SUI into treasury
     public fun deposit_sui(
         treasury: &mut Treasury,
@@ -320,6 +343,19 @@ module multisig_treasury::treasury {
             is_emergency: false,
             total_amount,
         }
+    }
+
+    /// Create and share a spending proposal (convenience function for CLI)
+    #[allow(lint(share_owned))]
+    public fun create_and_share_proposal(
+        treasury: &mut Treasury,
+        transactions: vector<Transaction>,
+        category: String,
+        description: String,
+        ctx: &mut TxContext
+    ) {
+        let proposal = create_proposal(treasury, transactions, category, description, ctx);
+        transfer::share_object(proposal);
     }
 
     /// Sign a proposal
