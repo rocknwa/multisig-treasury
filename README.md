@@ -2,7 +2,10 @@
 
 A sophisticated, secure, and flexible multi-signature treasury management system for DAOs and organizations on the Sui blockchain.
 
-- Package ID (Verified): 0x0b7df016c3c95739a210d87f028ee2627b99ff7fb092f9d3666f25ebd0e19aa8
+- Package ID (Verified): 0xdce9680134ca2e6e49b9393e76c7376b36c49d6b5577002eb42d0d45c0722fac
+- TREASURY_ID: 0x06bc43982ede0a050f14347483ff2aa641273326841275682737b7b63102d707
+- ADMIN_CAP_ID: 0x58a3560186d1a9ad141324e64617108e3b43c062c111a44a2e42ae0d904b58f5
+- PROPOSAL_ID: 0x41052d0a6a7e67a741ae0638dd4ffbc5bf573b188efdf9b99b4209c125b05759
 
 ## 🎯 Features
 
