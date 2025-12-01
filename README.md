@@ -541,5 +541,5 @@ Contributions are welcome! Please ensure:
 ## 📞 Support
 
 For questions and support:
-- [Email](anitherock44@gmail.com)
+- anitherock44@gmail.com
  
